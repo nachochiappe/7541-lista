@@ -110,23 +110,33 @@ void lista_destruir(lista_t *lista, void destruir_dato(void *)) {
  * *****************************************************************/
 
 lista_iter_t *lista_iter_crear(const lista_t *lista) {
-	
+	if (lista_esta_vacia(lista)) return NULL;
+	lista_iter_t* iter = malloc(sizeof(lista_iter_t));
+	iter->anterior = NULL;
+	iter->actual = lista->inicio;
+	return iter;
 }
  
 bool lista_iter_avanzar(lista_iter_t *iter) {
-	
- }
+	if (lista_iter_al_final(iter)) return false;
+	if (iter->actual == NULL) return false;
+	iter->anterior = iter->actual;
+	iter->actual = iter->actual->ref;
+	return true;
+}
  
 void *lista_iter_ver_actual(const lista_iter_t *iter) {
-	
+	void* valor = iter->actual->valor;
+	return valor;
 }
 
 bool lista_iter_al_final(const lista_iter_t *iter) {
-	
+	if (!iter->actual->ref) return true;
+	return false;
 }
 
 void lista_iter_destruir(lista_iter_t *iter) {
-	
+	free(iter);
 }
 
 /* ******************************************************************
