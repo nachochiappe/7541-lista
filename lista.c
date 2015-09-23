@@ -1,20 +1,20 @@
 #include "lista.h"
 #include <stdlib.h>
 
+/* *****************************************************************
+ *                   DEFINICION TIPOS DE DATOS
+ * *****************************************************************/
+
 typedef struct nodo {
 	void* valor;
-	struct nodo* ref;
+	struct nodo* siguiente;
 } nodo_t;
-
-/* Definición del struct lista */
 
 struct lista {
 	nodo_t* inicio;
 	nodo_t* fin;
 	size_t largo;
 }
-
-/* Definición del struct lista_iter */
 
 struct lista_iter {
 	nodo_t* anterior;
@@ -28,8 +28,8 @@ nodo_t* nodo_crear(void* valor){
 	if (!nodo)
 		return NULL;
 	nodo->valor = valor;
-	nodo_t* ref = NULL;
-	nodo->ref = ref;
+	nodo_t* siguiente = NULL;
+	nodo->siguiente = siguiente;
 	return nodo;
 }
 
@@ -54,7 +54,7 @@ bool lista_esta_vacia(const lista_t *lista) {
 bool lista_insertar_primero(lista_t *lista, void *dato) {
 	nodo = nodo_crear(dato);
 	if (!nodo) return false;
-	nodo->ref = lista->inicio;
+	nodo->siguiente = lista->inicio;
 	lista->inicio = nodo;
 	if (lista_esta_vacia(lista)) {
 		lista->fin = nodo;
@@ -70,7 +70,7 @@ bool lista_insertar_ultimo(lista_t *lista, void *dato) {
 		lista->inicio = nodo;
 		lista->fin = nodo;
 	}
-	lista->fin->ref = nodo;
+	lista->fin->siguiente = nodo;
 	lista->fin = nodo;
 	lista->largo--;
 	return true;
@@ -80,7 +80,7 @@ void *lista_borrar_primero(lista_t *lista) {
 	if (lista_esta_vacia(lista)) return NULL;
 	nodo_t* nodo_a_borrar = lista->inicio;
 	void* elemento = nodo_a_borrar->valor;
-	lista->inicio = lista->inicio->ref;
+	lista->inicio = lista->inicio->siguiente;
 	free(nodo_a_borrar);
 	lista->largo--;
 	if (lista_esta_vacia(lista)) lista->fin = NULL;
@@ -97,9 +97,8 @@ size_t lista_largo(const lista_t *lista) {
 }
 
 void lista_destruir(lista_t *lista, void destruir_dato(void *)) {
-	void* elemento;
 	while (!lista_esta_vacia(lista)) {
-		elemento = lista_borrar_primero(lista);
+		void* elemento = lista_borrar_primero(lista);
 		if (destruir_dato) destruir_dato(elemento);
 	}
 	free(lista);
@@ -119,9 +118,9 @@ lista_iter_t *lista_iter_crear(const lista_t *lista) {
  
 bool lista_iter_avanzar(lista_iter_t *iter) {
 	if (lista_iter_al_final(iter)) return false;
-	if (iter->actual == NULL) return false;
+	if (!(iter->actual)) return false;
 	iter->anterior = iter->actual;
-	iter->actual = iter->actual->ref;
+	iter->actual = iter->actual->siguiente;
 	return true;
 }
  
@@ -131,7 +130,7 @@ void *lista_iter_ver_actual(const lista_iter_t *iter) {
 }
 
 bool lista_iter_al_final(const lista_iter_t *iter) {
-	if (!iter->actual->ref) return true;
+	if (!(iter->actual)->siguiente) return true;
 	return false;
 }
 
@@ -144,11 +143,36 @@ void lista_iter_destruir(lista_iter_t *iter) {
  * *****************************************************************/ 
 
 bool lista_insertar(lista_t *lista, lista_iter_t *iter, void *dato) {
-	
+	// Si estoy en la primera posición del iterador
+	if (!(iter->anterior) && iter->actual) {
+		lista_insertar_primero(lista, dato);
+		iter->actual = lista->inicio;
+	}
+	// Si estoy en cualquier otra posición del iterador
+	else {
+		nodo_t* nodo = nodo_crear(dato);
+		if (!nodo) return false;
+		iter->anterior->siguiente = nodo;
+		nodo->siguiente = iter->actual;
+		iter->actual = nodo;
+	}
+	lista->largo++;
+	return true;
 }
 
 void *lista_borrar(lista_t *lista, lista_iter_t *iter) {
-	
+	nodo_t *nodo_a_borrar = iter->actual;
+	void* dato_borrado = nodo_a_borrar->valor;
+    // Si la lista está vacía
+	if (lista_esta_vacia(lista)) return NULL;
+	// Si estoy en la primera posición del iterador
+	else if (!(iter->anterior) && iter->actual) lista_borrar_primero(lista);
+	// Si estoy en la última posición del iterador
+	else if (lista_iter_al_final(iter)) lista->fin = iter->anterior;
+	// Si estoy en cualquier otra posición del iterador
+	else iter->anterior->siguiente = nodo_a_borrar->siguiente;
+	free(nodo_a_borrar);
+	return datp_borrado;
 }
 
 /* ******************************************************************
@@ -156,5 +180,8 @@ void *lista_borrar(lista_t *lista, lista_iter_t *iter) {
  * *****************************************************************/ 
 
 void lista_iterar(lista_t *lista, bool (*visitar)(void *dato, void *extra), void *extra) {
-	
+	lista_iter_t* iter = lista_iter_crear(lista);
+	void* dato = lista_iter_ver_actual(iter);
+	while ((lista_iter_avanzar(iter)) && (visitar(dato, extra))) dato = lista_iter_ver_actual(iter);
+	lista_iter_destruir(iter);
 }
