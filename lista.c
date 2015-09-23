@@ -119,20 +119,19 @@ lista_iter_t *lista_iter_crear(const lista_t *lista) {
  
 bool lista_iter_avanzar(lista_iter_t *iter) {
 	if (lista_iter_al_final(iter)) return false;
-	if (!(iter->actual)) return false;
 	iter->anterior = iter->actual;
 	iter->actual = iter->actual->siguiente;
 	return true;
 }
  
 void *lista_iter_ver_actual(const lista_iter_t *iter) {
+	if (!iter->actual) return NULL;
 	void* valor = iter->actual->valor;
 	return valor;
 }
 
 bool lista_iter_al_final(const lista_iter_t *iter) {
-	if (!(iter->actual)->siguiente) return true;
-	return false;
+	return !(iter->actual);
 }
 
 void lista_iter_destruir(lista_iter_t *iter) {
