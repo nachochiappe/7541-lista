@@ -73,7 +73,7 @@ bool lista_insertar_ultimo(lista_t *lista, void *dato) {
 	}
 	lista->fin->siguiente = nodo;
 	lista->fin = nodo;
-	lista->largo--;
+	lista->largo++;
 	return true;
 }
 
