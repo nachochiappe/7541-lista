@@ -3,10 +3,8 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
-//
-// Imprimir una lista con iterador externo
-//
 void imprimir_iter_externo(lista_t *lista) {
 	lista_iter_t *iter = lista_iter_crear(lista);
 	int num_items = 0;
@@ -120,6 +118,38 @@ void pruebas_lista_primitivas() {
 	lista_destruir(lista, NULL);
 }
 
+void pruebas_lista_de_listas() {
+	printf("\nINICIO DE PRUEBAS LISTA DE LISTAS\n");
+	
+	// Crear listas
+	lista_t* lista = lista_crear();
+	lista_t* lista1 = lista_crear();
+	lista_t* lista2 = lista_crear();
+	lista_t* lista3 = lista_crear();
+	lista_t* lista4 = lista_crear();
+	lista_t* lista5 = lista_crear();
+	
+	// Insertar un nodo al principio
+	print_test("Prueba insertar lista1 ultimo", lista_insertar_ultimo(lista, lista1));
+	print_test("Prueba insertar lista2 ultimo", lista_insertar_ultimo(lista, lista2));
+	print_test("Prueba insertar lista3 ultimo", lista_insertar_ultimo(lista, lista3));
+	print_test("Prueba insertar lista4 ultimo", lista_insertar_ultimo(lista, lista4));
+	print_test("Prueba insertar lista5 ultimo", lista_insertar_ultimo(lista, lista5));
+	
+	// Verificar que no esté vacía
+	print_test("Prueba lista NO está vacía", !lista_esta_vacia(lista));
+	
+	// Obtener largo de la lista
+	print_test("Prueba largo de lista = 5", lista_largo(lista) == 5);
+	
+	// Ver primero
+	print_test("Prueba ver primero de lista = lista1", lista_ver_primero(lista) == lista1);
+	
+	// Destruir lista
+	lista_destruir(lista, free);
+}
+
+
 void pruebas_lista_primitivas_volumen() {	
 	printf("\nINICIO DE PRUEBAS DE VOLUMEN\n");
 	
@@ -171,11 +201,11 @@ void pruebas_lista_primitivas_volumen() {
 	// Destruir lista
 	lista_destruir(lista, NULL);
 }
-/*
+
 void pruebas_lista_primitivas_con_iter() {
 	
 }
-*/
+
 void pruebas_lista_iter_externo() {
 	printf("\nINICIO DE PRUEBAS ITERADOR EXTERNO\n");
 	
@@ -208,6 +238,7 @@ void pruebas_lista_iter_interno() {
 
 void pruebas_lista_alumno() {
 	pruebas_lista_primitivas();
+	pruebas_lista_de_listas();
 	pruebas_lista_primitivas_volumen();
 	pruebas_lista_primitivas_con_iter();
 	pruebas_lista_iter_externo();
