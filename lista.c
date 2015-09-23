@@ -1,5 +1,6 @@
 #include "lista.h"
 #include <stdlib.h>
+#include <stdbool.h>
 
 /* *****************************************************************
  *                   DEFINICION TIPOS DE DATOS
@@ -14,12 +15,12 @@ struct lista {
 	nodo_t* inicio;
 	nodo_t* fin;
 	size_t largo;
-}
+};
 
 struct lista_iter {
 	nodo_t* anterior;
 	nodo_t* actual;
-}
+};
 
 /* Función auxiliar para crear un nuevo nodo */
 
@@ -52,7 +53,7 @@ bool lista_esta_vacia(const lista_t *lista) {
 }
 
 bool lista_insertar_primero(lista_t *lista, void *dato) {
-	nodo = nodo_crear(dato);
+	nodo_t* nodo = nodo_crear(dato);
 	if (!nodo) return false;
 	nodo->siguiente = lista->inicio;
 	lista->inicio = nodo;
@@ -64,7 +65,7 @@ bool lista_insertar_primero(lista_t *lista, void *dato) {
 }
 
 bool lista_insertar_ultimo(lista_t *lista, void *dato) {
-	nodo = nodo_crear(dato);
+	nodo_t* nodo = nodo_crear(dato);
 	if (!nodo) return false;
 	if (lista_esta_vacia(lista)) {
 		lista->inicio = nodo;
@@ -172,7 +173,7 @@ void *lista_borrar(lista_t *lista, lista_iter_t *iter) {
 	// Si estoy en cualquier otra posición del iterador
 	else iter->anterior->siguiente = nodo_a_borrar->siguiente;
 	free(nodo_a_borrar);
-	return datp_borrado;
+	return dato_borrado;
 }
 
 /* ******************************************************************
