@@ -42,7 +42,6 @@ void pruebas_lista_primitivas() {
 	
 	// Declaro variables a utilizar
 	int a = 1;
-	int* p_a = &a;
 		
 	// Crear lista
 	lista_t *lista = lista_crear();
@@ -52,7 +51,7 @@ void pruebas_lista_primitivas() {
 	print_test("Prueba lista está vacía", lista_esta_vacia(lista));
 	
 	// Insertar un nodo al principio
-	print_test("Prueba insertar primero", lista_insertar_primero(lista, p_a));
+	print_test("Prueba insertar primero", lista_insertar_primero(lista, &a));
 	
 	// Verificar que no esté vacía
 	print_test("Prueba lista NO está vacía", !lista_esta_vacia(lista));
@@ -61,10 +60,10 @@ void pruebas_lista_primitivas() {
 	print_test("Prueba largo de lista = 1", lista_largo(lista) == 1);
 	
 	// Ver primero
-	print_test("Prueba ver primero de lista = p_a", lista_ver_primero(lista) == p_a);
+	print_test("Prueba ver primero de lista = &a", lista_ver_primero(lista) == &a);
 	
 	// Borrar el nodo
-	print_test("Prueba borrar primero de lista = p_a", lista_borrar_primero(lista) == p_a);
+	print_test("Prueba borrar primero de lista = &a", lista_borrar_primero(lista) == &a);
 	
 	// Verificar que esté vacía luego de borrar el nodo
 	print_test("Prueba lista está vacía luego de borrar nodo", lista_esta_vacia(lista));
@@ -73,7 +72,7 @@ void pruebas_lista_primitivas() {
 	print_test("Prueba largo de lista = 0", lista_largo(lista) == 0);
 	
 	// Insertar un nodo al final
-	print_test("Prueba insertar ultimo", lista_insertar_ultimo(lista, p_a));
+	print_test("Prueba insertar ultimo", lista_insertar_ultimo(lista, &a));
 	
 	// Verificar que no esté vacía
 	print_test("Prueba lista NO está vacía", !lista_esta_vacia(lista));
@@ -82,10 +81,10 @@ void pruebas_lista_primitivas() {
 	print_test("Prueba largo de lista = 1", lista_largo(lista) == 1);
 	
 	// Ver primero
-	print_test("Prueba ver primero de lista = p_a", lista_ver_primero(lista) == p_a);
+	print_test("Prueba ver primero de lista = &a", lista_ver_primero(lista) == &a);
 	
 	// Borrar el nodo
-	print_test("Prueba borrar primero de lista = p_a", lista_borrar_primero(lista) == p_a);
+	print_test("Prueba borrar primero de lista = &a", lista_borrar_primero(lista) == &a);
 	
 	// Verificar que esté vacía luego de borrar el nodo
 	print_test("Prueba lista está vacía luego de borrar nodo", lista_esta_vacia(lista));
@@ -155,11 +154,6 @@ void pruebas_lista_primitivas_volumen() {
 	
 	// Declaro variables a utilizar
 	int a = 1, b = 2, c = 3, d = 4, e = 5;
-	int* p_a = &a;
-	int* p_b = &b;
-	int* p_c = &c;
-	int* p_d = &d;
-	int* p_e = &e;
 	
 	// Crear lista
 	lista_t *lista = lista_crear();
@@ -167,11 +161,11 @@ void pruebas_lista_primitivas_volumen() {
 	
 	// Insertar 2500 nodos al principio (5 nodos 500 veces = 2500)
 	for (int i = 1; i <= 500; i++) {
-		lista_insertar_primero(lista, p_a);
-		lista_insertar_primero(lista, p_b);
-		lista_insertar_primero(lista, p_c);
-		lista_insertar_primero(lista, p_d);
-		lista_insertar_primero(lista, p_e);
+		lista_insertar_primero(lista, &a);
+		lista_insertar_primero(lista, &b);
+		lista_insertar_primero(lista, &c);
+		lista_insertar_primero(lista, &d);
+		lista_insertar_primero(lista, &e);
 	}
 	
 	// Verificar que no esté vacía
@@ -181,22 +175,22 @@ void pruebas_lista_primitivas_volumen() {
 	print_test("Prueba largo de lista = 2500", lista_largo(lista) == 2500);
 	
 	// Ver primero
-	print_test("Prueba ver primero de lista = p_e", lista_ver_primero(lista) == p_e);
+	print_test("Prueba ver primero de lista = &e", lista_ver_primero(lista) == &e);
 	
 	// Insertar 2500 nodos al final (5 nodos 500 veces = 2500)
 	for (int i = 1; i <= 500; i++) {
-		lista_insertar_ultimo(lista, p_a);
-		lista_insertar_ultimo(lista, p_b);
-		lista_insertar_ultimo(lista, p_c);
-		lista_insertar_ultimo(lista, p_d);
-		lista_insertar_ultimo(lista, p_e);
+		lista_insertar_ultimo(lista, &a);
+		lista_insertar_ultimo(lista, &b);
+		lista_insertar_ultimo(lista, &c);
+		lista_insertar_ultimo(lista, &d);
+		lista_insertar_ultimo(lista, &e);
 	}
 	
 	// Obtener largo de la lista
 	print_test("Prueba largo de lista = 5000", lista_largo(lista) == 5000);
 	
 	// Ver primero
-	print_test("Prueba ver primero de lista = p_e", lista_ver_primero(lista) == p_e);
+	print_test("Prueba ver primero de lista = &e", lista_ver_primero(lista) == &e);
 	
 	// Destruir lista
 	lista_destruir(lista, NULL);
