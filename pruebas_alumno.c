@@ -4,36 +4,23 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-/* ******************************************************************
- *                      EJEMPLOS ITERADORES
- * *****************************************************************/
-/*
 //
 // Imprimir una lista con iterador externo
 //
-void imprimir_iter_externo(lista_t *lista)
-{
-    lista_iter_t *iter = lista_iter_crear(lista);
-    int num_items = 0;
+void imprimir_iter_externo(lista_t *lista) {
+	lista_iter_t *iter = lista_iter_crear(lista);
+	int num_items = 0;
 
-    while (!lista_iter_al_final(iter))
-    {
-        char *elemento = lista_iter_ver_actual(iter);
-        printf("%d. %s\n", ++num_items, elemento);
-
-        lista_iter_avanzar(iter);
-    }
+	while (!lista_iter_al_final(iter)) {
+		char *elemento = lista_iter_ver_actual(iter);
+		printf("%d. %s\n", ++num_items, elemento);
+		lista_iter_avanzar(iter);
+	}
 	printf("Tengo que comprar %d ítems\n", num_items);
-    lista_iter_destruir(iter);
+	lista_iter_destruir(iter);
 }
 
-
-//
-// Imprimir una lista con iterador interno
-//
-
-bool imprimir_un_item(void *elemento, void *extra)
-{
+bool imprimir_un_item(void *elemento, void *extra) {
 	// Sabemos que ‘extra’ es un entero, por tanto le podemos hacer un cast.
 	int *contador = extra;
 	char *item = elemento;
@@ -42,38 +29,19 @@ bool imprimir_un_item(void *elemento, void *extra)
 	return true; // seguir iterando
 }
 
-void imprimir_iter_interno(lista_t *lista)
-{
+void imprimir_iter_interno(lista_t *lista) {
 	int num_items = 0;
 	lista_iterar(lista, imprimir_un_item, &num_items);
 	printf("Tengo que comprar %d ítems\n", num_items);
 }
-
-//
-// Ejemplo de uso
-//
-
-
-void ejemplo_iteradores() {
-    lista_t *super = lista_crear();
-
-    lista_insertar_ultimo(super, "leche");
-    lista_insertar_ultimo(super, "huevos");
-    lista_insertar_ultimo(super, "pan");
-    lista_insertar_ultimo(super, "mermelada");
-
-    imprimir_iter_externo(super);
-    imprimir_iter_interno(super);
-
-    lista_destruir(super, NULL);
-}
-*/
 
 /* ******************************************************************
  *                   PRUEBAS UNITARIAS ALUMNO
  * *****************************************************************/
 
 void pruebas_lista_primitivas() {
+	printf("\nINICIO DE PRUEBAS PRIMITIVAS DE LISTA\n");
+	
 	// Declaro variables a utilizar
 	int a = 1;
 	int* p_a = &a;
@@ -127,11 +95,34 @@ void pruebas_lista_primitivas() {
 	// Obtener largo de la lista luego de borrar el nodo
 	print_test("Prueba largo de lista = 0", lista_largo(lista) == 0);
 	
+	// Insertar nodo NULL
+	print_test("Prueba insertar NULL", lista_insertar_primero(lista, NULL));
+	
+	// Verificar que no esté vacía
+	print_test("Prueba lista NO está vacía", !lista_esta_vacia(lista));
+	
+	// Obtener largo de la lista
+	print_test("Prueba largo de lista = 1", lista_largo(lista) == 1);
+	
+	// Ver primero
+	print_test("Prueba ver primero de lista = NULL", lista_ver_primero(lista) == NULL);
+	
+	// Borrar el nodo
+	print_test("Prueba borrar primero de lista = NULL", lista_borrar_primero(lista) == NULL);
+	
+	// Verificar que esté vacía luego de borrar el nodo
+	print_test("Prueba lista está vacía luego de borrar nodo", lista_esta_vacia(lista));
+	
+	// Obtener largo de la lista luego de borrar el nodo
+	print_test("Prueba largo de lista = 0", lista_largo(lista) == 0);
+	
 	// Destruir lista
 	lista_destruir(lista, NULL);
 }
 
 void pruebas_lista_primitivas_volumen() {	
+	printf("\nINICIO DE PRUEBAS DE VOLUMEN\n");
+	
 	// Declaro variables a utilizar
 	int a = 1, b = 2, c = 3, d = 4, e = 5;
 	int* p_a = &a;
@@ -180,17 +171,39 @@ void pruebas_lista_primitivas_volumen() {
 	// Destruir lista
 	lista_destruir(lista, NULL);
 }
-
+/*
 void pruebas_lista_primitivas_con_iter() {
 	
 }
-
+*/
 void pruebas_lista_iter_externo() {
+	printf("\nINICIO DE PRUEBAS ITERADOR EXTERNO\n");
 	
+	lista_t *super = lista_crear();
+	
+	lista_insertar_ultimo(super, "Leche");
+	lista_insertar_ultimo(super, "Huevos");
+	lista_insertar_ultimo(super, "Pan");
+	lista_insertar_ultimo(super, "Mermelada");
+	
+	imprimir_iter_externo(super);
+	
+	lista_destruir(super, NULL);
 }
 
 void pruebas_lista_iter_interno() {
+	printf("\nINICIO DE PRUEBAS ITERADOR INTERNO\n");
 	
+	lista_t *super = lista_crear();
+
+	lista_insertar_ultimo(super, "Leche");
+	lista_insertar_ultimo(super, "Huevos");
+	lista_insertar_ultimo(super, "Pan");
+	lista_insertar_ultimo(super, "Mermelada");
+
+	imprimir_iter_interno(super);
+
+	lista_destruir(super, NULL);
 }
 
 void pruebas_lista_alumno() {
