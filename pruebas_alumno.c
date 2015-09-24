@@ -197,7 +197,29 @@ void pruebas_lista_primitivas_volumen() {
 }
 
 void pruebas_lista_primitivas_con_iter() {
+	printf("\nINICIO DE PRUEBAS PRIMITIVAS DE LISTAS JUNTO CON ITERADOR\n");
 	
+	// Declaro variables a utilizar
+	int a = 1;
+	
+	lista_t *lista = lista_crear();
+	print_test("Prueba crear lista", lista != NULL);
+	
+	lista_iter_t *iter = lista_iter_crear(lista);
+	print_test("Prueba crear iterador", iter != NULL);
+	
+	// Borrar lista vacía
+	print_test("Prueba borrar lista vacía", !lista_borrar(lista, iter));
+	
+	// Insertar en lista vacía
+	print_test("Prueba insertar elemento", lista_insertar(lista, iter, &a));
+	print_test("Prueba lista NO está vacía", !lista_esta_vacia(lista));
+	print_test("Prueba borrar igual a &a", lista_borrar(lista, iter) == &a);
+	print_test("Prueba lista está vacía", lista_esta_vacia(lista));
+	
+	// Destruir iterador y lista
+	lista_iter_destruir(iter);
+	lista_destruir(lista, NULL);
 }
 
 void pruebas_lista_iter_externo() {
