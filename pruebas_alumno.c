@@ -225,6 +225,35 @@ void pruebas_lista_primitivas_con_iter() {
 void pruebas_lista_iter_externo() {
 	printf("\nINICIO DE PRUEBAS ITERADOR EXTERNO\n");
 	
+	// Pruebas del alumno
+	
+	int a = 1, b = 2, c = 3;
+	
+	lista_t *lista = lista_crear();
+	lista_iter_t *iter = lista_iter_crear(lista);
+	print_test("Prueba avanzar iterador en lista vacía", !lista_iter_avanzar(iter));
+	print_test("Prueba ver actual iterador en lista vacía", !lista_iter_ver_actual(iter));
+	print_test("Prueba iterador al final en lista vacía", lista_iter_al_final(iter));
+	lista_insertar(lista, iter, &a);
+	lista_insertar(lista, iter, &b);
+	print_test("Prueba ver primero luego de insertar con iterador en la primera posicion", lista_ver_primero(lista) == &b);
+	print_test("Prueba ver actual iterador", lista_iter_ver_actual(iter) == &b);
+	print_test("Prueba avanzar iterador", lista_iter_avanzar(iter));
+	lista_insertar(lista, iter, &c);
+	print_test("Prueba insertar en el medio en lista con elementos", lista_ver_primero(lista) == &b);
+	print_test("Prueba ver actual iterador", lista_iter_ver_actual(iter) == &c);
+	print_test("Prueba avanzar iterador", lista_iter_avanzar(iter));
+	print_test("Prueba avanzar iterador", lista_iter_avanzar(iter));
+	print_test("Prueba iterador al final luego de avanzar iterador", lista_iter_al_final(iter));
+	print_test("Prueba insertar al final en lista con elementos", lista_insertar(lista, iter, &a));
+	
+	
+	lista_iter_destruir(iter);
+	lista_destruir(lista, NULL);
+	
+	// Ejemplo de la cátedra
+	
+	printf("\nPrueba de ejemplo de la catedra:\n");
 	lista_t *super = lista_crear();
 	
 	lista_insertar_ultimo(super, "Leche");
@@ -239,6 +268,8 @@ void pruebas_lista_iter_externo() {
 
 void pruebas_lista_iter_interno() {
 	printf("\nINICIO DE PRUEBAS ITERADOR INTERNO\n");
+	
+	// Ejemplo de la cátedra
 	
 	lista_t *super = lista_crear();
 
