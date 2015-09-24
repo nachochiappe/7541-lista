@@ -269,8 +269,31 @@ void pruebas_lista_iter_externo() {
 void pruebas_lista_iter_interno() {
 	printf("\nINICIO DE PRUEBAS ITERADOR INTERNO\n");
 	
+	// Pruebas del alumno
+	
+	lista_t *lista = lista_crear();
+	
+	lista_insertar_ultimo(lista, "Enero");
+	lista_insertar_ultimo(lista, "Febrero");
+	lista_insertar_ultimo(lista, "Marzo");
+	lista_insertar_ultimo(lista, "Abril");
+	lista_insertar_ultimo(lista, "Mayo");
+	lista_insertar_ultimo(lista, "Junio");
+	lista_insertar_ultimo(lista, "Julio");
+	lista_insertar_ultimo(lista, "Agosto");
+	lista_insertar_ultimo(lista, "Septiembre");
+	lista_insertar_ultimo(lista, "Octubre");
+	lista_insertar_ultimo(lista, "Noviembre");
+	lista_insertar_ultimo(lista, "Diciembre");
+	
+	int num_mes = 0;
+	lista_iterar(lista, imprimir_un_item, &num_mes);
+	
+	lista_destruir(lista, NULL);
+	
 	// Ejemplo de la cátedra
 	
+	printf("\nPrueba de ejemplo de la catedra:\n");
 	lista_t *super = lista_crear();
 
 	lista_insertar_ultimo(super, "Leche");
