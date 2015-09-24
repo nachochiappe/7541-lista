@@ -110,7 +110,6 @@ void lista_destruir(lista_t *lista, void destruir_dato(void *)) {
  * *****************************************************************/
 
 lista_iter_t *lista_iter_crear(const lista_t *lista) {
-	if (lista_esta_vacia(lista)) return NULL;
 	lista_iter_t* iter = malloc(sizeof(lista_iter_t));
 	iter->anterior = NULL;
 	iter->actual = lista->inicio;
@@ -144,7 +143,7 @@ void lista_iter_destruir(lista_iter_t *iter) {
 
 bool lista_insertar(lista_t *lista, lista_iter_t *iter, void *dato) {
 	// Si estoy en la primera posición del iterador
-	if (!(iter->anterior) && iter->actual) {
+	if (!iter->anterior) {
 		lista_insertar_primero(lista, dato);
 		iter->actual = lista->inicio;
 	}
@@ -155,23 +154,31 @@ bool lista_insertar(lista_t *lista, lista_iter_t *iter, void *dato) {
 		iter->anterior->siguiente = nodo;
 		nodo->siguiente = iter->actual;
 		iter->actual = nodo;
+		lista->largo++;
 	}
-	lista->largo++;
 	return true;
 }
 
 void *lista_borrar(lista_t *lista, lista_iter_t *iter) {
-	nodo_t *nodo_a_borrar = iter->actual;
-	void* dato_borrado = nodo_a_borrar->valor;
-    // Si la lista está vacía
-	if (lista_esta_vacia(lista)) return NULL;
+	void* dato_borrado;
+	// Si la lista está vacía o recorrí toda la lista
+	if (lista_iter_al_final(iter)) return NULL;
 	// Si estoy en la primera posición del iterador
-	else if (!(iter->anterior) && iter->actual) lista_borrar_primero(lista);
-	// Si estoy en la última posición del iterador
-	else if (lista_iter_al_final(iter)) lista->fin = iter->anterior;
+	else if (!iter->anterior) {
+		dato_borrado = lista_borrar_primero(lista);
+		iter->actual = lista->inicio;
+	}
 	// Si estoy en cualquier otra posición del iterador
-	else iter->anterior->siguiente = nodo_a_borrar->siguiente;
-	free(nodo_a_borrar);
+	else {
+		nodo_t *nodo_a_borrar = iter->actual;
+		dato_borrado = nodo_a_borrar->valor;
+		// Si estoy al final de la lista
+		if (!iter->actual->siguiente) iter->anterior->siguiente = NULL;
+		// Si estoy en cualquier otra posición
+		else iter->anterior->siguiente = nodo_a_borrar->siguiente;
+		free(nodo_a_borrar);
+		lista->largo--;
+	}
 	return dato_borrado;
 }
 
