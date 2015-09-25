@@ -81,10 +81,10 @@ void *lista_borrar_primero(lista_t *lista) {
 	if (lista_esta_vacia(lista)) return NULL;
 	nodo_t* nodo_a_borrar = lista->inicio;
 	void* elemento = nodo_a_borrar->valor;
-	lista->inicio = lista->inicio->siguiente;
-	free(nodo_a_borrar);
+	lista->inicio = nodo_a_borrar->siguiente;
 	lista->largo--;
 	if (lista_esta_vacia(lista)) lista->fin = NULL;
+	free(nodo_a_borrar);
 	return elemento;
 }
 
@@ -119,7 +119,7 @@ lista_iter_t *lista_iter_crear(const lista_t *lista) {
 bool lista_iter_avanzar(lista_iter_t *iter) {
 	if (lista_iter_al_final(iter)) return false;
 	iter->anterior = iter->actual;
-	iter->actual = iter->actual->siguiente;
+	iter->actual = iter->anterior->siguiente;
 	return true;
 }
  
@@ -144,8 +144,13 @@ void lista_iter_destruir(lista_iter_t *iter) {
 bool lista_insertar(lista_t *lista, lista_iter_t *iter, void *dato) {
 	// Si estoy en la primera posición del iterador
 	if (!iter->anterior) {
-		lista_insertar_primero(lista, dato);
-		iter->actual = lista->inicio;
+		if (lista_insertar_primero(lista, dato)) iter->actual = lista->inicio;
+		else return false;
+	}
+	// Si estoy en la última posición del iterador
+	else if (lista_iter_al_final(iter)) {
+		if (lista_insertar_ultimo(lista, dato)) iter->anterior = lista->fin;
+		else return false;
 	}
 	// Si estoy en cualquier otra posición del iterador
 	else {
@@ -162,7 +167,7 @@ bool lista_insertar(lista_t *lista, lista_iter_t *iter, void *dato) {
 void *lista_borrar(lista_t *lista, lista_iter_t *iter) {
 	void* dato_borrado;
 	// Si la lista está vacía o recorrí toda la lista
-	if (lista_iter_al_final(iter)) return NULL;
+	if (lista_esta_vacia(lista) || lista_iter_al_final(iter)) return NULL;
 	// Si estoy en la primera posición del iterador
 	else if (!iter->anterior) {
 		dato_borrado = lista_borrar_primero(lista);
@@ -173,7 +178,10 @@ void *lista_borrar(lista_t *lista, lista_iter_t *iter) {
 		nodo_t *nodo_a_borrar = iter->actual;
 		dato_borrado = nodo_a_borrar->valor;
 		// Si estoy al final de la lista
-		if (!iter->actual->siguiente) iter->anterior->siguiente = NULL;
+		if (!iter->actual->siguiente) {
+			iter->anterior->siguiente = NULL;
+			iter->actual = NULL;
+		}
 		// Si estoy en cualquier otra posición
 		else iter->anterior->siguiente = nodo_a_borrar->siguiente;
 		free(nodo_a_borrar);
