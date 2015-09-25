@@ -227,7 +227,7 @@ void pruebas_lista_iter_externo() {
 	
 	// Pruebas del alumno
 	
-	int a = 1, b = 2, c = 3;
+	int a = 1, b = 2, c = 3, d = 4;
 	
 	lista_t *lista = lista_crear();
 	lista_iter_t *iter = lista_iter_crear(lista);
@@ -245,11 +245,44 @@ void pruebas_lista_iter_externo() {
 	print_test("Prueba avanzar iterador", lista_iter_avanzar(iter));
 	print_test("Prueba avanzar iterador", lista_iter_avanzar(iter));
 	print_test("Prueba iterador al final luego de avanzar iterador", lista_iter_al_final(iter));
-	print_test("Prueba insertar al final en lista con elementos", lista_insertar(lista, iter, &a));
-	
+	print_test("Prueba insertar al final en lista con elementos", lista_insertar(lista, iter, &d));
 	
 	lista_iter_destruir(iter);
 	lista_destruir(lista, NULL);
+	
+	// Pruebas con dos iteradores
+	
+	lista_t *lista1 = lista_crear();
+	lista_iter_t *iter1 = lista_iter_crear(lista);
+	
+	lista_insertar(lista, iter1, &a);
+	lista_iter_avanzar(iter1);
+	lista_insertar(lista, iter1, &b);
+	lista_iter_avanzar(iter1);
+	lista_insertar(lista, iter1, &c);
+	lista_iter_avanzar(iter1);
+	
+	lista_iter_t *iter2 = lista_iter_crear(lista1);
+	print_test("Prueba crear segundo iterador", iter2 != NULL);
+	print_test("Prueba avanzar segundo iterador", lista_iter_avanzar(iter2));
+	print_test("Prueba ver actual segundo iterador", lista_iter_ver_actual(iter2) == &b);
+	print_test("Prueba avanzar segundo iterador", lista_iter_avanzar(iter2));
+	print_test("Prueba ver actual segundo iterador", lista_iter_ver_actual(iter2) == &c);
+	print_test("Prueba avanzar segundo iterador", lista_iter_avanzar(iter2));
+	print_test("Prueba segundo iterador al final", lista_iter_al_final(iter2));
+	
+	lista_iter_t *iter3 = lista_iter_crear(lista1);
+	print_test("Prueba crear tercer iterador", iter3 != NULL);
+	print_test("Prueba borrar con iterador externo", lista_borrar(lista1, iter3) == &a);
+	print_test("Prueba ver actual tercer iterador", lista_iter_ver_actual(iter3) == &b);
+	print_test("Prueba avanzar tercer iterador", lista_iter_avanzar(iter3));
+	print_test("Prueba borrar con iterador externo", lista_borrar(lista1, iter3) == &c);
+	print_test("Prueba tercer iterador al final", lista_iter_al_final(iter3));
+	
+	lista_iter_destruir(iter1);
+	lista_iter_destruir(iter2);
+	lista_iter_destruir(iter3);
+	lista_destruir(lista1, NULL);
 	
 	// Ejemplo de la cátedra
 	
