@@ -253,13 +253,13 @@ void pruebas_lista_iter_externo() {
 	// Pruebas con dos iteradores
 	
 	lista_t *lista1 = lista_crear();
-	lista_iter_t *iter1 = lista_iter_crear(lista);
+	lista_iter_t *iter1 = lista_iter_crear(lista1);
 	
-	lista_insertar(lista, iter1, &a);
+	lista_insertar(lista1, iter1, &a);
 	lista_iter_avanzar(iter1);
-	lista_insertar(lista, iter1, &b);
+	lista_insertar(lista1, iter1, &b);
 	lista_iter_avanzar(iter1);
-	lista_insertar(lista, iter1, &c);
+	lista_insertar(lista1, iter1, &c);
 	lista_iter_avanzar(iter1);
 	
 	lista_iter_t *iter2 = lista_iter_crear(lista1);
