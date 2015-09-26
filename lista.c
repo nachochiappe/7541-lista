@@ -149,7 +149,7 @@ bool lista_insertar(lista_t *lista, lista_iter_t *iter, void *dato) {
 	}
 	// Si estoy en la última posición del iterador
 	else if (lista_iter_al_final(iter)) {
-		if (lista_insertar_ultimo(lista, dato)) iter->anterior = lista->fin;
+		if (lista_insertar_ultimo(lista, dato)) iter->actual = lista->fin;
 		else return false;
 	}
 	// Si estoy en cualquier otra posición del iterador
@@ -181,6 +181,7 @@ void *lista_borrar(lista_t *lista, lista_iter_t *iter) {
 		if (!iter->actual->siguiente) {
 			iter->anterior->siguiente = NULL;
 			iter->actual = NULL;
+			lista->fin = iter->anterior;
 		}
 		// Si estoy en cualquier otra posición
 		else {
