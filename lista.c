@@ -183,7 +183,10 @@ void *lista_borrar(lista_t *lista, lista_iter_t *iter) {
 			iter->actual = NULL;
 		}
 		// Si estoy en cualquier otra posición
-		else iter->anterior->siguiente = nodo_a_borrar->siguiente;
+		else {
+			iter->anterior->siguiente = nodo_a_borrar->siguiente;
+			iter->actual = nodo_a_borrar->siguiente; 
+		}
 		free(nodo_a_borrar);
 		lista->largo--;
 	}
